@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XR Headset Feedback Questionnaire | The Accessibility Research Centre</title>
+
+    <!-- Stylesheets -->
+    <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <link href="./assets/css/app.css" rel="stylesheet" />
+    
+    <style>
+      .quiz-section {
+        padding: 40px 0; 
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+      }
+      
+      .quiz-header {
+        background: #0c4965;
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .quiz-progress {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+      
+      .progress {
+        height: 10px;
+        border-radius: 5px;
+        background-color: #e9ecef;
+      }
+      
+      .progress-bar {
+        background-color: #0c4965;
+        transition: width 0.5s ease;
+      }
+
+      .quiz-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        padding: 30px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      
+      .quiz-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .question-number {
+        color: #0c4965;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+
+      .question-text {
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        color: #2c3e50;
+        line-height: 1.6;
+      }
+
+      .options-container {
+        display: grid;
+        gap: 15px;
+      }
+
+      .option-item {
+        position: relative;
+        cursor: pointer;
+      }
+
+      .option-input {
+        display: none;
+      }
+
+      .option-label {
+        display: block;
+        padding: 15px 20px;
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        color: #495057;
+        margin: 0;
+      }
+
+      .option-label:hover {
+        background: #e9ecef;
+        border-color: #0c4965;
+      }
+
+      .option-input:checked + .option-label {
+        background: #0c4965;
+        color: white;
+        border-color: #0c4965;
+      }
+
+      .quiz-navigation {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+      }
+
+      .nav-btn {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .prev-btn {
+        background: #e9ecef;
+        color: #495057;
+      }
+
+      .prev-btn:hover {
+        background: #dee2e6;
+      }
+
+      .next-btn {
+        background: #0c4965;
+        color: white;
+      }
+
+      .next-btn:hover {
+        background: #083548;
+      }
+
+      .timer-container {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .timer-icon {
+        color: #0c4965;
+        font-size: 1.5rem;
+      }
+
+      .timer-text {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #0c4965;
+      }
+
+      .submit-btn {
+        background: #28a745;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 20px;
+      }
+
+      .submit-btn:hover {
+        background: #218838;
+      }
+
+      @media (max-width: 768px) {
+        .quiz-card {
+          padding: 20px;
+        }
+        
+        .nav-btn {
+          padding: 10px 20px;
+        }
+      }
+
+      .quiz-container {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 20px;
+      }
+
+      .candidate-info {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        height: fit-content;
+        position: sticky;
+        top: 20px;
+      }
+
+      .candidate-detail {
+        margin-bottom: 15px;
+      }
+
+      .candidate-detail label {
+        font-weight: 600;
+        color: #0c4965;
+        margin-bottom: 5px;
+        display: block;
+      }
+
+      .candidate-detail span {
+        color: #495057;
+      }
+
+      .questions-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+        margin-top: 20px;
+      }
+
+      .question-dot {
+        width: 100%;
+        padding: 8px;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .question-dot.unanswered {
+        background: #e9ecef;
+        color: #495057;
+      }
+
+      .question-dot.answered {
+        background: #0c4965;
+        color: white;
+      }
+
+      .question-dot.current {
+        background: #28a745;
+        color: white;
+        transform: scale(1.1);
+      }
+
+      .question-dot:hover {
+        transform: scale(1.1);
+      }
+
+      @media (max-width: 992px) {
+        .quiz-container {
+          grid-template-columns: 1fr;
+        }
+        
+        .candidate-info {
+          position: static;
+          margin-bottom: 20px;
+        }
+      }
+
+      /* Auth Overlay Styles */
+      .auth-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1050;
+      }
+
+      .auth-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .auth-logo {
+        text-align: center;
+        margin-bottom: 15px;
+      }
+
+      .auth-logo img {
+        height: 50px;
+      }
+
+      .auth-title {
+        text-align: center;
+        color: #0c4965;
+        margin-bottom: 15px;
+        font-size: 1.4rem;
+      }
+
+      .input-group {
+        margin-bottom: 12px;
+      }
+
+      .input-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #0c4965;
+        font-size: 0.9rem;
+      }
+
+      .input-group input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 2px solid #e9ecef;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+      }
+
+      .input-group input:focus {
+        border-color: #0c4965;
+        outline: none;
+      }
+
+      .login-btn {
+        width: 100%;
+        padding: 10px;
+        background: #0c4965;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        margin-top: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .login-btn:hover {
+        background: #083548;
+      }
+
+      .auth-error {
+        color: #dc3545;
+        text-align: center;
+        margin-top: 15px;
+        font-weight: 500;
+        display: none;
+      }
+
+      .shake {
+        animation: shake 0.5s;
+      }
+
+      @keyframes shake {
+        0% { transform: translateX(0); }
+        20% { transform: translateX(-10px); }
+        40% { transform: translateX(10px); }
+        60% { transform: translateX(-10px); }
+        80% { transform: translateX(10px); }
+        100% { transform: translateX(0); }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Auth Overlay -->
+    <div class="auth-overlay" id="authOverlay">
+      <div class="auth-card">
+        <div class="auth-logo">
+          <img src="./assets/images/logo.png" alt="ARC logo" />
+        </div>
+        <h2 class="auth-title">XR Headset Feedback Questionnaire</h2>
+        <form id="authForm">
+          <div class="input-group">
+            <label for="fullName">Name (optional)</label>
+            <input type="text" id="fullName">
+          </div>
+          <div class="input-group">
+            <label for="email">Email/cell no (optional)</label>
+            <input type="text" id="email">
+          </div>
+          <div class="input-group">
+            <label for="age">Age</label>
+            <input type="text" id="age" required>
+          </div>
+          <div class="input-group">
+            <label for="gender">Gender</label>
+            <input type="text" id="gender" required>
+          </div>
+          <div class="input-group">
+            <label for="disability">Disability type if disabled</label>
+            <input type="text" id="disability">
+          </div>
+          <div class="input-group">
+            <label for="occupation">Student / Teacher / Occupation</label>
+            <input type="text" id="occupation" required>
+          </div>
+          <button type="submit" class="login-btn">Start Questionnaire</button>
+          <div class="auth-error" id="authError">Please fill in all required fields.</div>
+        </form>
+        <div class="admin-access-container" style="margin-top: 15px; text-align: center;">
+          <button id="adminAccessBtn" class="btn btn-secondary btn-sm">Admin Access</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div class="modal fade" id="adminLoginModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Admin Login</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="adminLoginForm">
+              <div class="input-group">
+                <label for="adminAccessCode">Access Code</label>
+                <input type="password" id="adminAccessCode" required>
+              </div>
+              <div class="auth-error" id="adminAuthError" style="display: none;">Invalid access code.</div>
+              <button type="submit" class="login-btn mt-3">Login</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navbar (reusing the same navbar structure) -->
+    <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light p-0">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img src="./assets/images/logo.png" alt="ARC logo" />
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link px-3" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-3" href="about.html">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-3 active" href="sound_sculpting_event.html">Events</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-3" href="research-projects.html">Research & Projects</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-3" href="gallery.html">Gallery</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-3" href="contact.html">Contact Us</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Quiz Section -->
+    <section class="quiz-section">
+      <div class="container">
+        <div class="quiz-header text-center">
+          <h1 class="mb-3">Feedback Questionnaire: XR Headset Module with Audio and Touch Interaction</h1>
+          <p class="mb-0">Please answer the following questions based on your experience with the XR headset module. Use the provided scale for each question.</p>
+        </div>
+
+        <div class="quiz-container">
+          <div class="quiz-main">
+            <div class="quiz-progress mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="question-counter">Question 1 of 18</span>
+                <div class="timer-container">
+                  <i class="fas fa-clock timer-icon"></i>
+                  <span class="timer-text">29:59</span>
+                </div>
+              </div>
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: 3.33%" aria-valuenow="3.33" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+
+            <div class="quiz-card">
+              <div class="question-number">Question 1</div>
+              <div class="question-text" id="questionText">1. The XR headset's audio was enjoyable. (1 = very annoying, 5 = very enjoyable)</div>
+              <div class="options-container" id="optionsContainer">
+                <div class="option-item">
+                  <input type="radio" name="question" id="option_a" class="option-input">
+                  <label for="option_a" class="option-label">1</label>
+                </div>
+                <div class="option-item">
+                  <input type="radio" name="question" id="option_b" class="option-input">
+                  <label for="option_b" class="option-label">2</label>
+                </div>
+                <div class="option-item">
+                  <input type="radio" name="question" id="option_c" class="option-input">
+                  <label for="option_c" class="option-label">3</label>
+                </div>
+                <div class="option-item">
+                  <input type="radio" name="question" id="option_d" class="option-input">
+                  <label for="option_d" class="option-label">4</label>
+                </div>
+                <div class="option-item">
+                  <input type="radio" name="question" id="option_e" class="option-input">
+                  <label for="option_e" class="option-label">5</label>
+                </div>
+              </div>
+
+              <div class="quiz-navigation">
+                <button class="nav-btn prev-btn" disabled>
+                  <i class="fas fa-arrow-left"></i>
+                  Previous
+                </button>
+                <button class="nav-btn next-btn">
+                  Next
+                  <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <button class="submit-btn" style="display: none;">
+              Submit Feedback
+              <i class="fas fa-check ms-2"></i>
+            </button>
+          </div>
+
+          <div class="candidate-info">
+            <h4 class="mb-4">Participant Details</h4>
+            <div class="candidate-detail">
+              <label>Name</label>
+              <span id="candidateName">-</span>
+            </div>
+            <div class="candidate-detail">
+              <label>Age</label>
+              <span id="candidateAge">-</span>
+            </div>
+            <div class="candidate-detail">
+              <label>Gender</label>
+              <span id="candidateGender">-</span>
+            </div>
+            <div class="candidate-detail">
+              <label>Occupation</label>
+              <span id="candidateOccupation">-</span>
+            </div>
+            <hr>
+            <h5 class="mb-3">Questions Overview</h5>
+            <div class="questions-grid" id="questionsGrid">
+              <!-- Question dots will be added dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <div class="language-toggle">
+          <label for="languageSwitch">Language:</label>
+          <select id="languageSwitch">
+            <option value="english">English</option>
+            <option value="tamil">Tamil</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Admin View -->
+    <div id="adminView" style="display: none;" class="container mt-4">
+      <h2 class="mb-4">Questionnaire Responses</h2>
+      <button id="downloadCSV" class="btn btn-primary mb-4">
+        <i class="fas fa-download"></i> Download CSV
+      </button>
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <thead class="thead-dark">
+            <tr>
+              <th>Timestamp</th>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Gender</th>
+              <th>Occupation</th>
+              <th>Average Rating</th>
+              <th>Time Spent (min)</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody id="responsesTableBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+      // Quiz data
+      const quizQuestions = [
+      {
+        question: "The XR headset's audio was enjoyable. (1 = very annoying, 5 = very enjoyable)",
+        tamil: "XR தலைக்கருவியின் ஒலி அனுபவம் மகிழ்ச்சியாக இருந்ததா? (1 = மிகவும் எரிச்சலூட்டும், 5 = மிகவும் மகிழ்ச்சிகரமானது)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      },
+      {
+        question: "The touch interface with oceanic tactile objects was enjoyable (1 = very annoying, 5 = very enjoyable)",
+        tamil: "கடல் சார்ந்த தொடு பொருட்களை தொடும் பொழுது மகிழ்ச்சியாக இருந்ததா? (1 = மிகவும் எரிச்சலூட்டும், 5 = மிகவும் மகிழ்ச்சிகரமானது)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      },
+      {
+        question: "The overall theme of the ocean through audio and touch was attractive (1 = very unattractive, 5 = very attractive)",
+        tamil: "ஒலி மற்றும் தொடு தொடர்புடன் வழியாக கடலின் மொத்த கருப்பொருள் அறிய மகிழ்ச்சியாக இருந்ததா? (1 = மிகவும் எரிச்சலூட்டும், 5 = மிகவும் மகிழ்ச்சிகரமானது)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      },
+      {
+        question: "The XR headset's audio instructions were clear (1 = very confusing, 5 = very clear)",
+        tamil: "XR தலைக்கருவியின் ஒலி வழிகாட்டுதல்கள் தெளிவாக இருந்ததா? (1 = மிகவும் குழப்பமானது, 5 = மிகவும் தெளிவானது)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      },
+      {
+        question: "The touch interface with oceanic tactile objects was clear (1 = very confusing, 5 = very clear)",
+        tamil: "கடல் சார்ந்த தொடு பொருட்களை தொடும் பொழுது தெளிவாக இருந்ததா? (1 = மிகவும் குழப்பமானது, 5 = மிகவும் தெளிவானது)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      },
+      {
+        question: "The overall theme of ocean through audio and touch was easy to learn (1 = very difficult, 5 = very easy)",
+        tamil: "ஒலி மற்றும் தொடுதல் வழியாக கடலின் கருப்பொருளை கற்றுக்கொள்வதற்கேற்ப எளிதாக இருந்ததா? (1 = மிகவும் கடினமானது, 5 = மிகவும் எளிதானது)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      },
+      {
+        question: "The audio descriptions made me feel secure (1 = least secure, 5 = very secure)",
+        tamil: "ஒலி விளக்கங்கள் பாதுகாப்பாக உணர வைத்ததா? (1 = மிகக் குறைந்த பாதுகாப்பு, 5 = மிகவும் பாதுகாப்பானது)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      },
+      {
+        question: "The touch interface with oceanic tactile objects was secure (1 = least secure, 5 = very secure)",
+        tamil: "கடல் சார்ந்த தொடு பொருட்களை தொடும் பொழுது பாதுகாப்பாக உணர வைத்ததா? (1 = மிகக் குறைந்த பாதுகாப்பு, 5 = மிகவும் பாதுகாப்பானது)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      },
+      {
+        question: "The overall theme of ocean through audio and touch was predictable and secure (1 = least secure, 5 = very secure)",
+        tamil: "ஒலி மற்றும் தொடுதல் வழியாக கடலின் கருப்பொருள் கணிக்கத்தக்க மற்றும் பாதுகாப்பாக இருந்ததா? (1 = மிகக் குறைந்த பாதுகாப்பு, 5 = மிகவும் பாதுகாப்பானது)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      },
+      {
+        question: "The audio descriptions were efficient and fast (1 = least efficient, 5 = very efficient)",
+        tamil: "ஒலி விளக்கங்கள் பயனுள்ளதாக இருந்ததா? (1 = மிகக் குறைந்த பயனுள்ளதாக இருந்தது, 5 = மிக பயனுள்ளதாக இருந்தது)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      },
+      {
+        question: "11. The tactile touch interface was efficient and fast (1 = least efficient, 5 = very efficient)",
+        tamil: "11. கடல் சார்ந்த தொடு பொருட்களை தொடுதல் பயனுள்ளதாக இருந்ததா? (1 = மிகக் குறைந்த பயனுள்ளதாக இருந்தது, 5 = மிக பயனுள்ளதாக இருந்தது)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      },
+      {
+        question: "The overall theme of ocean through audio and touch was efficient (1 = least efficient, 5 = very efficient)",
+        tamil: "ஒலி மற்றும் தொடுதல் வழியாக கடலின் கருப்பொருளை அளிவது பயனுள்ளதாக இருந்ததா? (1 = மிகக் குறைந்த பயனுள்ளதாக இருந்தது, 5 = மிக பயனுள்ளதாக இருந்தது)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      },
+      {
+        question: "The audio experience was very exciting (1 = very boring, 5 = very exciting)",
+        tamil: "ஒலி அனுபவம் மிகவும் ஆர்வமூட்டும் வகையில் இருந்ததா? (1 = மிகக் குறைந்த ஆர்வமுள்ளது, 5 = மிகவும் ஆர்வமூட்டும் வகையில் இருந்தது)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      },
+      {
+        question: "The touch experience was very exciting (1 = very boring, 5 = very exciting)",
+        tamil: "தொடுதல் அனுபவம் மிகவும் ஆர்வமூட்டும் வகையில் இருந்ததா? (1 = மிகக் குறைந்த ஆர்வமுள்ளது, 5 = மிகவும் ஆர்வமூட்டும் வகையில் இருந்தது)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      },
+      {
+        question: "The overall theme of ocean through audio and touch was interesting (1 = least interesting, 5 = very interesting)",
+        tamil: "ஒலி மற்றும் தொடுதல் வழியாக கடலின் கருப்பொருள் மிகுந்த ஆர்வமூட்டும் வகையில் இருந்ததா? (1 = மிகக் குறைந்த ஆர்வமுள்ளது, 5 = மிகவும் ஆர்வமூட்டும்)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      },
+      {
+        question: "The audio experience created was innovative (1 = strongly disagree, 5 = strongly agree)",
+        tamil: "உருவாக்கப்பட்ட ஒலி அனுபவம் புதுமையானது? (1 = மிகவும் மறுப்பு, 5 = மிகவும் ஒப்புதல்)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      },
+      {
+        question: "The tactile touch experience created was innovative (1 = strongly disagree, 5 = strongly agree)",
+        tamil: "உருவாக்கப்பட்ட தொடுதல் அனுபவம் புதுமையானது? (1 = மிகவும் மறுப்பு, 5 = மிகவும் ஒப்புதல்)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      },
+      {
+        question: "The overall theme of ocean created through audio and touch was innovative (1 = strongly disagree, 5 = strongly agree)",
+        tamil: "ஒலி மற்றும் தொடுதல் மூலம் உருவாக்கப்பட்ட கடலின் கருப்பொருள் புதுமையான? (1 = மிகவும் மறுப்பு, 5 = மிகவும் ஒப்புதல்)",
+        options: ["1", "2", "3", "4", "5"],
+        correct: null
+      }
+    ];
+
+      // No need to generate remaining questions - we have exactly 18 questions
+      
+      // User data
+      let userData = {
+        name: "",
+        email: "",
+        age: "",
+        gender: "",
+        disability: "",
+        occupation: "",
+        startTime: null,
+        answers: []
+      };
+
+      // Auth & Quiz variables
+      const CORRECT_ACCESS_CODE = "SOUNDARC2025"; // Regular access code
+      const ADMIN_ACCESS_CODE = "12345"; // Admin access code
+      let currentQuestion = 0;
+      let answers = new Array(18).fill(null);
+      let timeLeft = 1800; // 30 minutes in seconds
+      let timerInterval = null;
+      let shuffledQuestionIndices = []; // Array to store shuffled question indices
+
+      // Function to shuffle an array (Fisher-Yates algorithm)
+      function shuffleArray(array) {
+        const newArray = [...array];
+        for (let i = newArray.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+        }
+        return newArray;
+      }
+
+      // Function to create shuffled question indices
+      function createShuffledQuestions() {
+        const indices = Array.from({ length: quizQuestions.length }, (_, i) => i);
+        shuffledQuestionIndices = shuffleArray(indices);
+      }
+
+      // Add admin view container
+      const adminViewHTML = `
+        <div id="adminView" style="display: none;" class="container mt-4">
+          <h2 class="mb-4">Questionnaire Responses</h2>
+          <button id="downloadCSV" class="btn btn-primary mb-4">
+            <i class="fas fa-download"></i> Download CSV
+          </button>
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Name</th>
+                  <th>Age</th>
+                  <th>Gender</th>
+                  <th>Occupation</th>
+                  <th>Average Rating</th>
+                  <th>Time Spent (min)</th>
+                  <th>Details</th>
+                </tr>
+              </thead>
+              <tbody id="responsesTableBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      // Insert admin view after quiz section
+      document.querySelector('.quiz-section').insertAdjacentHTML('beforeend', adminViewHTML);
+
+      // Document ready function
+      document.addEventListener('DOMContentLoaded', function() {
+        // Ensure submit button is properly set up
+        setupSubmitButton();
+        
+        // Add event listener to auth form
+        document.getElementById('authForm').addEventListener('submit', handleAuthSubmit);
+        
+        // Add event listener to language switch
+        document.getElementById('languageSwitch').addEventListener('change', function() {
+          selectedLanguage = this.value;
+          updateQuestionContent();
+        });
+        
+        // Add keyboard navigation
+        document.addEventListener('keydown', handleKeyboardNavigation);
+
+        // Admin access button click handler
+        document.getElementById('adminAccessBtn').addEventListener('click', function() {
+          // Show admin login modal
+          const adminModal = new bootstrap.Modal(document.getElementById('adminLoginModal'));
+          adminModal.show();
+        });
+
+        // Admin login form submission
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+          e.preventDefault();
+          const adminAccessCode = document.getElementById('adminAccessCode').value.trim();
+          
+          if (adminAccessCode === ADMIN_ACCESS_CODE) {
+            // Hide admin login modal
+            const adminModal = bootstrap.Modal.getInstance(document.getElementById('adminLoginModal'));
+            adminModal.hide();
+            
+            // Hide auth overlay
+            document.getElementById('authOverlay').style.display = 'none';
+            
+            // Show admin view
+            showAdminView();
+          } else {
+            // Show error message
+            const errorElement = document.getElementById('adminAuthError');
+            errorElement.style.display = 'block';
+            
+            // Add shake animation to form
+            const form = document.getElementById('adminLoginForm');
+            form.classList.add('shake');
+            
+            // Remove shake class after animation completes
+            setTimeout(() => {
+              form.classList.remove('shake');
+            }, 500);
+          }
+        });
+      });
+
+      // Function to handle keyboard navigation
+      function handleKeyboardNavigation(e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          if (currentQuestion < quizQuestions.length - 1) {
+            // Navigate to next question in shuffled order
+            navigateToQuestion(currentQuestion + 1);
+          }
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          if (currentQuestion > 0) {
+            // Navigate to previous question in shuffled order
+            navigateToQuestion(currentQuestion - 1);
+          }
+        } else if (e.key >= '1' && e.key <= '5') {
+          const optionIndex = parseInt(e.key) - 1;
+          const optionInput = document.getElementById(`option_${optionIndex}`);
+          if (optionInput) {
+            optionInput.checked = true;
+            
+            // Save the answer immediately
+            const actualQuestionIndex = shuffledQuestionIndices[currentQuestion];
+            answers[actualQuestionIndex] = optionIndex;
+          }
+        }
+      }
+
+      // Function to handle auth form submission
+      function handleAuthSubmit(e) {
+        e.preventDefault();
+        
+        const fullName = document.getElementById('fullName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const age = document.getElementById('age').value.trim();
+        const gender = document.getElementById('gender').value.trim();
+        const disability = document.getElementById('disability').value.trim();
+        const occupation = document.getElementById('occupation').value.trim();
+        
+        // Simple validation for regular users
+        if (!age || !gender || !occupation) {
+          showAuthError("Please fill in all required fields");
+          return;
+        }
+        
+        // Save user data
+        userData = {
+          name: fullName,
+          email: email,
+          age: age,
+          gender: gender,
+          disability: disability,
+          occupation: occupation,
+          startTime: new Date(),
+          answers: []
+        };
+        
+        // Update participant info in sidebar
+        document.getElementById('candidateName').textContent = fullName || "-";
+        document.getElementById('candidateAge').textContent = age;
+        document.getElementById('candidateGender').textContent = gender;
+        document.getElementById('candidateOccupation').textContent = occupation;
+        
+        // Hide auth overlay
+        document.getElementById('authOverlay').style.display = 'none';
+        
+        // Start quiz
+        startQuiz();
+      }
+
+      // Function to show auth error
+      function showAuthError(message) {
+        const errorElement = document.getElementById('authError');
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+        
+        // Add shake animation to form
+        const form = document.getElementById('authForm');
+        form.classList.add('shake');
+        
+        // Remove shake class after animation completes
+        setTimeout(() => {
+          form.classList.remove('shake');
+        }, 500);
+      }
+
+      // Add admin view functions
+      function showAdminView() {
+        // Hide quiz container and show admin view
+        document.querySelector('.quiz-container').style.display = 'none';
+        document.getElementById('adminView').style.display = 'block';
+        
+        // Load responses
+        loadResponses();
+        
+        // Setup download CSV button
+        document.getElementById('downloadCSV').addEventListener('click', downloadAllResponsesCSV);
+      }
+
+      function loadResponses() {
+        // Load responses from local storage
+        let submissions = JSON.parse(localStorage.getItem('questionnaire_submissions') || '[]');
+        const tableBody = document.getElementById('responsesTableBody');
+        tableBody.innerHTML = '';
+
+        submissions.forEach((data, index) => {
+          const row = document.createElement('tr');
+          
+          const timestamp = data.endTime ? new Date(data.endTime).toLocaleString() : 'N/A';
+          const timeSpent = data.timeSpent ? Math.round(data.timeSpent / 60) : 'N/A';
+          
+          row.innerHTML = `
+            <td>${timestamp}</td>
+            <td>${data.name || 'Anonymous'}</td>
+            <td>${data.age || 'N/A'}</td>
+            <td>${data.gender || 'N/A'}</td>
+            <td>${data.occupation || 'N/A'}</td>
+            <td>${data.averageRating || 'N/A'}</td>
+            <td>${timeSpent}</td>
+            <td>
+              <button class="btn btn-sm btn-info view-response" data-index="${index}">
+                <i class="fas fa-eye"></i> View
+              </button>
+            </td>
+          `;
+          
+          tableBody.appendChild(row);
+        });
+
+        // Add click event listeners to all view buttons
+        document.querySelectorAll('.view-response').forEach(button => {
+          button.addEventListener('click', function() {
+            const index = this.getAttribute('data-index');
+            showResponseDetails(index);
+          });
+        });
+      }
+
+      function showResponseDetails(index) {
+        // Load responses from local storage
+        let submissions = JSON.parse(localStorage.getItem('questionnaire_submissions') || '[]');
+        const data = submissions[index];
+
+        // Create a modal to show detailed response
+        const modalHTML = `
+          <div class="modal fade" id="responseModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Detailed Response</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                  <h6>Participant Information</h6>
+                  <table class="table table-bordered mb-4">
+                    <tr>
+                      <th>Name</th>
+                      <td>${data.name || 'Anonymous'}</td>
+                      <th>Email</th>
+                      <td>${data.email || 'N/A'}</td>
+                    </tr>
+                    <tr>
+                      <th>Age</th>
+                      <td>${data.age || 'N/A'}</td>
+                      <th>Gender</th>
+                      <td>${data.gender || 'N/A'}</td>
+                    </tr>
+                    <tr>
+                      <th>Occupation</th>
+                      <td>${data.occupation || 'N/A'}</td>
+                      <th>Disability</th>
+                      <td>${data.disability || 'None'}</td>
+                    </tr>
+                  </table>
+                  
+                  <h6>Question Responses</h6>
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Question</th>
+                        <th>Rating</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${data.answers && data.answers.map(a => `
+                        <tr>
+                          <td>${a.question}</td>
+                          <td>${a.rating !== null ? a.rating : 'N/A'}</td>
+                        </tr>
+                      `).join('') || '<tr><td colspan="2">No responses recorded</td></tr>'}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        // Remove existing modal if any
+        const existingModal = document.getElementById('responseModal');
+        if (existingModal) {
+          existingModal.remove();
+        }
+
+        // Add new modal to document
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        
+        // Show the modal
+        const modal = new bootstrap.Modal(document.getElementById('responseModal'));
+        modal.show();
+      }
+
+      function downloadAllResponsesCSV() {
+        // Load responses from local storage
+        let submissions = JSON.parse(localStorage.getItem('questionnaire_submissions') || '[]');
+        const csvRows = [];
+        
+        // Add CSV header
+        const headers = ['Timestamp', 'Name', 'Email', 'Age', 'Gender', 'Disability', 'Occupation', 'Time Spent (min)', 'Average Rating', 'Answered Questions'];
+        // Add question headers
+        for (let i = 1; i <= 18; i++) {
+          headers.push(`Q${i} Rating`);
+        }
+        csvRows.push(headers.join(','));
+
+        // Add data rows
+        submissions.forEach((data, index) => {
+          const row = [
+            data.endTime ? new Date(data.endTime).toISOString() : '',
+            data.name || 'Anonymous',
+            data.email || '',
+            data.age || '',
+            data.gender || '',
+            data.disability || '',
+            data.occupation || '',
+            Math.round(data.timeSpent / 60),
+            data.averageRating,
+            data.answeredQuestions
+          ];
+
+          // Add question ratings
+          data.answers.forEach(answer => {
+            row.push(answer.rating !== null ? answer.rating : '');
+          });
+
+          csvRows.push(row.map(cell => `"${cell}"`).join(','));
+        });
+
+        // Create and download CSV file
+        const csvContent = csvRows.join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        if (link.download !== undefined) {
+          const url = URL.createObjectURL(blob);
+          link.setAttribute('href', url);
+          link.setAttribute('download', `questionnaire_responses_${new Date().toISOString()}.csv`);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      }
+
+      function startQuiz() {
+        // Create shuffled question indices
+        createShuffledQuestions();
+        
+        // Initialize grid
+        initializeQuestionGrid();
+        
+        // Set up initial question
+        updateQuestionContent();
+        
+        // Start timer
+        timerInterval = setInterval(updateTimer, 1000);
+
+        // Make sure submit button is properly set up
+        setupSubmitButton();
+        
+        // Make sure the submit button is hidden for the first question
+        document.querySelector('.submit-btn').style.display = 'none';
+        document.querySelector('.next-btn').style.display = 'block';
+      }
+
+      // Add this new function to handle submit button setup
+      function setupSubmitButton() {
+        const submitBtn = document.querySelector('.submit-btn');
+        // Remove any existing event listeners
+        submitBtn.replaceWith(submitBtn.cloneNode(true));
+        // Add new event listener
+        document.querySelector('.submit-btn').addEventListener('click', submitQuiz);
+      }
+
+      function submitQuiz() {
+        // Prevent multiple submissions
+        const submitBtn = document.querySelector('.submit-btn');
+        if (submitBtn.disabled) return;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+        
+        // Stop timer
+        clearInterval(timerInterval);
+        
+        // Save final answer
+        saveCurrentAnswer();
+        
+        // Prepare data for submission - in the original question order
+        userData.answers = [];
+        for (let i = 0; i < quizQuestions.length; i++) {
+          // For each original question index
+          userData.answers.push({
+            question: quizQuestions[i].question,
+            rating: answers[i] !== null ? parseInt(quizQuestions[i].options[answers[i]]) : null
+          });
+        }
+        
+        userData.endTime = new Date();
+        userData.timeSpent = Math.floor((userData.endTime - userData.startTime) / 1000); // in seconds
+        
+        // Calculate average rating
+        const validRatings = userData.answers.filter(a => a.rating !== null).map(a => a.rating);
+        const averageRating = validRatings.length > 0 ? 
+          (validRatings.reduce((sum, rating) => sum + rating, 0) / validRatings.length).toFixed(1) : 
+          "N/A";
+        
+        userData.averageRating = averageRating;
+        userData.totalQuestions = quizQuestions.length;
+        userData.answeredQuestions = validRatings.length;
+        
+        // Save to local storage
+        saveToLocalStorage(userData);
+        
+        // Send data to Google Sheet
+        sendToGoogleSheet(userData)
+          .then(() => {
+            // Show completion message on success
+            showCompletionMessage(true, averageRating);
+          })
+          .catch(error => {
+            // Show error message
+            showCompletionMessage(false, averageRating, error);
+          })
+          .finally(() => {
+            // Re-enable submit button in case of error
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Submit Feedback <i class="fas fa-check ms-2"></i>';
+          });
+      }
+
+      // Function to send data to Google Sheets
+      function sendToGoogleSheet(data) {
+        // Prepare data for Google Sheets
+        const formData = {
+          timestamp: data.endTime ? new Date(data.endTime).toISOString() : new Date().toISOString(),
+          name: data.name || 'Anonymous',
+          email: data.email || 'Not provided',
+          age: data.age || 'Not provided',
+          gender: data.gender || 'Not provided',
+          disability: data.disability || 'None',
+          occupation: data.occupation || 'Not provided',
+          timeSpent: Math.round(data.timeSpent / 60), // in minutes
+          averageRating: data.averageRating,
+          answeredQuestions: data.answeredQuestions
+        };
+        
+        // Add individual question responses
+        data.answers.forEach((answer, index) => {
+          formData[`q${index + 1}`] = answer.rating !== null ? answer.rating : 'No answer';
+        });
+        
+        // Return a promise for better error handling
+        return new Promise((resolve, reject) => {
+          // Send data to Google Sheets web app
+          fetch('https://script.google.com/macros/s/AKfycbzrZ310N5GJ1UCZ_-3brfew-2AnagFQ7JQPDxII6mlHtRaXZU6Icoh2yJ6cIafF8SdTWg/exec', {
+            method: 'POST',
+            mode: 'no-cors', // Required for Google Apps Script
+            cache: 'no-cache',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            redirect: 'follow',
+            body: JSON.stringify(formData)
+          })
+          .then(response => {
+            // With no-cors mode, we can't actually check the response status
+            // But we can assume it worked if we got a response
+            resolve();
+          })
+          .catch(error => {
+            console.error('Error sending data to Google Sheet:', error);
+            reject(error);
+          });
+        });
+      }
+
+      // Add this new function to reset the quiz
+      function resetQuiz() {
+        // Reset all variables
+        currentQuestion = 0;
+        answers = new Array(18).fill(null);
+        timeLeft = 1800;
+        shuffledQuestionIndices = [];
+        userData = {
+          name: "",
+          email: "",
+          age: "",
+          gender: "",
+          disability: "",
+          occupation: "",
+          startTime: null,
+          answers: []
+        };
+
+        // Show auth overlay again
+        document.getElementById('authOverlay').style.display = 'flex';
+        
+        // Clear participant info
+        document.getElementById('candidateName').textContent = "-";
+        document.getElementById('candidateAge').textContent = "-";
+        document.getElementById('candidateGender').textContent = "-";
+        document.getElementById('candidateOccupation').textContent = "-";
+
+        // Reset form fields
+        document.getElementById('fullName').value = "";
+        document.getElementById('email').value = "";
+        document.getElementById('age').value = "";
+        document.getElementById('gender').value = "";
+        document.getElementById('disability').value = "";
+        document.getElementById('occupation').value = "";
+
+        // Clear any error messages
+        document.getElementById('authError').style.display = 'none';
+
+        // Reset question grid
+        initializeQuestionGrid();
+
+        // Reset timer display
+        document.querySelector('.timer-text').textContent = "30:00";
+
+        // Clear any selected options
+        const options = document.querySelectorAll('input[name="question"]');
+        options.forEach(option => option.checked = false);
+        
+        // Reset submit button
+        const submitBtn = document.querySelector('.submit-btn');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Submit Feedback <i class="fas fa-check ms-2"></i>';
+        
+        // Make sure the submit button is hidden and next button is shown for the first question
+        const nextBtn = document.querySelector('.next-btn');
+        nextBtn.style.display = 'block';
+        submitBtn.style.display = 'none';
+        
+        // Ensure the submit button has its event listener
+        setupSubmitButton();
+      }
+
+      // Add a variable to track the selected language
+      let selectedLanguage = 'english';
+
+      // Listen for changes on the language switch - This is now handled in the document ready function
+      // document.getElementById('languageSwitch').addEventListener('change', function() {
+      //   selectedLanguage = this.value;
+      //   updateQuestionContent();
+      // });
+
+      // Update question content based on the selected language
+      function updateQuestionContent() {
+        if (currentQuestion >= 0 && currentQuestion < quizQuestions.length) {
+          // Get the actual question index from the shuffled array
+          const actualQuestionIndex = shuffledQuestionIndices[currentQuestion];
+          const question = quizQuestions[actualQuestionIndex];
+          const questionText = selectedLanguage === 'english' ? question.question : question.tamil;
+          document.getElementById('questionText').textContent = questionText;
+          
+          const optionsContainer = document.getElementById('optionsContainer');
+          optionsContainer.innerHTML = '';
+          
+          question.options.forEach((option, index) => {
+            const optionItem = document.createElement('div');
+            optionItem.className = 'option-item';
+            optionItem.innerHTML = `
+              <input type="radio" name="question" id="option_${index}" class="option-input" ${answers[actualQuestionIndex] === index ? 'checked' : ''}>
+              <label for="option_${index}" class="option-label">${option}</label>
+            `;
+            optionsContainer.appendChild(optionItem);
+          });
+        }
+      }
+
+      // Navigation functionality
+      function navigateToQuestion(index) {
+        if (index >= 0 && index < quizQuestions.length) {
+          saveCurrentAnswer();
+          currentQuestion = index;
+          updateUI();
+        }
+      }
+
+      function saveCurrentAnswer() {
+        const selectedOption = document.querySelector('input[name="question"]:checked');
+        if (selectedOption) {
+          const index = parseInt(selectedOption.id.split('_')[1]);
+          if (!isNaN(index)) {
+            // Save to original question index location in answers array
+            const actualQuestionIndex = shuffledQuestionIndices[currentQuestion];
+            answers[actualQuestionIndex] = index;
+          }
+        }
+      }
+
+      function updateUI() {
+        // Update question counter and progress bar
+        document.querySelector('.question-counter').textContent = `Question ${currentQuestion + 1} of 18`;
+        document.querySelector('.progress-bar').style.width = `${((currentQuestion + 1) / 18) * 100}%`;
+        
+        // Update the question number text
+        document.querySelector('.question-number').textContent = `Question ${currentQuestion + 1}`;
+
+        // Update navigation buttons
+        document.querySelector('.prev-btn').disabled = currentQuestion === 0;
+        const nextBtn = document.querySelector('.next-btn');
+        const submitBtn = document.querySelector('.submit-btn');
+
+        if (currentQuestion === 17) {
+          nextBtn.style.display = 'none';
+          submitBtn.style.display = 'block';
+        } else {
+          nextBtn.style.display = 'block';
+          submitBtn.style.display = 'none';
+        }
+
+        // Update question content and grid
+        updateQuestionContent();
+        updateQuestionGrid();
+      }
+
+      // Event listeners
+      document.querySelector('.next-btn').addEventListener('click', () => {
+        if (currentQuestion < quizQuestions.length - 1) {
+          navigateToQuestion(currentQuestion + 1);
+        }
+      });
+
+      document.querySelector('.prev-btn').addEventListener('click', () => {
+        if (currentQuestion > 0) {
+          navigateToQuestion(currentQuestion - 1);
+        }
+      });
+
+      // Initialize question grid
+      function initializeQuestionGrid() {
+        const grid = document.getElementById('questionsGrid');
+        grid.innerHTML = ''; // Clear existing dots
+        for (let i = 0; i < 18; i++) {
+          const button = document.createElement('button');
+          button.className = 'question-dot unanswered';
+          button.textContent = i + 1;
+          button.onclick = () => navigateToQuestion(i);
+          grid.appendChild(button);
+        }
+        updateQuestionGrid();
+      }
+
+      // Update question grid status
+      function updateQuestionGrid() {
+        const dots = document.querySelectorAll('.question-dot');
+        dots.forEach((dot, index) => {
+          // The grid shows questions in visual order from 1-18, not in their original order
+          const visualPosition = index;
+          
+          // Find if this is the current question
+          const isCurrent = (visualPosition === currentQuestion);
+          
+          // Check if this question (by its position in the grid) has been answered
+          const originalQuestionIndex = shuffledQuestionIndices[visualPosition];
+          const isAnswered = answers[originalQuestionIndex] !== null;
+          
+          dot.className = 'question-dot ' + 
+            (isCurrent ? 'current' : (isAnswered ? 'answered' : 'unanswered'));
+        });
+      }
+
+      // Timer functionality
+      function updateTimer() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        document.querySelector('.timer-text').textContent = 
+          `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (timeLeft > 0) {
+          timeLeft--;
+        } else {
+          submitQuiz();
+        }
+      }
+
+      // Function to save data to local storage
+      function saveToLocalStorage(data) {
+        // Get existing submissions from local storage
+        let submissions = JSON.parse(localStorage.getItem('questionnaire_submissions') || '[]');
+        
+        // Add new submission
+        submissions.push(data);
+        
+        // Save back to local storage
+        localStorage.setItem('questionnaire_submissions', JSON.stringify(submissions));
+        
+        // CSV download is now only available in admin view
+      }
+      
+      // Function to download CSV
+      function downloadCSV(submissions) {
+        // Create CSV header
+        let csvContent = 'Timestamp,Name,Email,Age,Gender,Disability,Occupation,Time Spent (min),Average Rating,Answered Questions';
+        
+        // Add question headers
+        for (let i = 1; i <= 18; i++) {
+          csvContent += `,Q${i} Rating`;
+        }
+        csvContent += '\n';
+        
+        // Add data rows
+        submissions.forEach((data, index) => {
+          const row = [
+            data.endTime.toISOString(),
+            data.name || 'Anonymous',
+            data.email || '',
+            data.age || '',
+            data.gender || '',
+            data.disability || '',
+            data.occupation || '',
+            Math.round(data.timeSpent / 60),
+            data.averageRating,
+            data.answeredQuestions
+          ];
+          
+          // Add question ratings
+          data.answers.forEach(answer => {
+            row.push(answer.rating !== null ? answer.rating : '');
+          });
+          
+          csvContent += row.map(cell => `"${cell}"`).join(',') + '\n';
+        });
+        
+        // Create download link
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        
+        if (link.download !== undefined) {
+          const url = URL.createObjectURL(blob);
+          link.setAttribute('href', url);
+          link.setAttribute('download', `questionnaire_responses_${timestamp}.csv`);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      }
+
+      function showCompletionMessage(isSuccess, averageRating, error = null) {
+        // Check if Bootstrap is available
+        if (typeof bootstrap === 'undefined') {
+          console.error("Bootstrap is not loaded. Using custom notification instead.");
+          
+          // Create custom notification element
+          const notificationHTML = `
+            <div id="customNotification" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                 background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); 
+                 z-index: 9999; max-width: 90%; width: 400px; text-align: center;">
+              <div style="font-size: 48px; margin-bottom: 15px; color: ${isSuccess ? '#28a745' : '#ffc107'}">
+                <i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i>
+              </div>
+              <h3 style="margin-bottom: 15px; color: #333;">${isSuccess ? 'Submission Successful!' : 'Partial Submission'}</h3>
+              <p style="margin-bottom: 15px; color: #555;">
+                ${isSuccess ? 'Thank you for completing the feedback questionnaire!' : 'Your responses were saved locally but we could not send them to our server.'}
+              </p>
+              ${!isSuccess ? 
+                `<div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                   ${error ? `Error: ${error.message}` : 'Network or server error. Please check your connection.'}
+                 </div>` : ''}
+              <div style="display: flex; ${!isSuccess ? 'justify-content: space-between' : 'justify-content: center'}; margin-top: 20px;">
+                ${!isSuccess ? 
+                  `<button id="customTryAgainBtn" style="background-color: #007bff; color: white; border: none; padding: 10px 15px; 
+                    border-radius: 5px; cursor: pointer;">Try Again</button>` : ''}
+                <button id="customStartNewBtn" style="background-color: ${isSuccess ? '#007bff' : '#6c757d'}; color: white; 
+                  border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+                  ${isSuccess ? 'Start New Questionnaire' : 'Start New'}
+                </button>
+              </div>
+            </div>
+            <div id="customOverlay" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+                 background-color: rgba(0,0,0,0.5); z-index: 9998;"></div>
+          `;
+          
+          // Add to document
+          document.body.insertAdjacentHTML('beforeend', notificationHTML);
+          
+          // Add event listeners
+          document.getElementById('customStartNewBtn').addEventListener('click', function() {
+            // Remove custom notification
+            document.getElementById('customNotification').remove();
+            document.getElementById('customOverlay').remove();
+            
+            // Reset quiz
+            resetQuiz();
+          });
+          
+          // Add try again button event listener if it exists
+          const tryAgainBtn = document.getElementById('customTryAgainBtn');
+          if (tryAgainBtn) {
+            tryAgainBtn.addEventListener('click', function() {
+              // Remove custom notification
+              document.getElementById('customNotification').remove();
+              document.getElementById('customOverlay').remove();
+              
+              // Try sending to Google Sheets again
+              const submitBtn = document.querySelector('.submit-btn');
+              submitBtn.disabled = true;
+              submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Retrying...';
+              
+              sendToGoogleSheet(userData)
+                .then(() => {
+                  showCompletionMessage(true, userData.averageRating);
+                })
+                .catch(error => {
+                  showCompletionMessage(false, userData.averageRating, error);
+                });
+            });
+          }
+          
+          return;
+        }
+        
+        // First, remove any existing modal
+        const existingModal = document.getElementById('completionModal');
+        if (existingModal) {
+          const bsModal = bootstrap.Modal.getInstance(existingModal);
+          if (bsModal) {
+            bsModal.dispose();
+          }
+          existingModal.remove();
+        }
+
+        // Create completion modal HTML
+        const modalHTML = `
+          <div class="modal fade" id="completionModal" tabindex="-1" aria-labelledby="completionModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header ${isSuccess ? 'bg-success' : 'bg-warning'} text-white">
+                  <h5 class="modal-title" id="completionModalLabel">${isSuccess ? 'Submission Successful!' : 'Partial Submission'}</h5>
+                </div>
+                <div class="modal-body text-center py-4">
+                  <i class="fas ${isSuccess ? 'fa-check-circle text-success' : 'fa-exclamation-triangle text-warning'}" style="font-size: 48px;"></i>
+                  <p class="mt-3 mb-0">${isSuccess ? 'Thank you for completing the feedback questionnaire!' : 'Your responses were saved locally but we could not send them to our server.'}</p>
+                  <p class="text-muted">${isSuccess ? 'Your responses have been saved successfully.' : 'You can try submitting again or continue with a new questionnaire.'}</p>
+                  ${!isSuccess ? `<div class="alert alert-danger mt-3">${error ? `Error: ${error.message}` : 'Network or server error. Please check your connection.'}</div>` : ''}
+                </div>
+                <div class="modal-footer ${!isSuccess ? 'd-flex justify-content-between' : ''}">
+                  ${!isSuccess ? `<button type="button" class="btn btn-primary" id="tryAgainBtn">Try Again</button>` : ''}
+                  <button type="button" class="btn btn-${isSuccess ? 'primary' : 'secondary'}" id="startNewQuiz">${isSuccess ? 'Start New Questionnaire' : 'Start New'}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        // Add modal to document
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        
+        try {
+          // Get the modal element
+          const modalElement = document.getElementById('completionModal');
+          
+          // Create a new modal instance
+          const modal = new bootstrap.Modal(modalElement, {
+            backdrop: 'static',
+            keyboard: false
+          });
+          
+          // Add event listener to the "Start New Questionnaire" button
+          document.getElementById('startNewQuiz').addEventListener('click', function() {
+            modal.hide();
+          });
+          
+          // Add event listener for "Try Again" button if it exists
+          const tryAgainBtn = document.getElementById('tryAgainBtn');
+          if (tryAgainBtn) {
+            tryAgainBtn.addEventListener('click', function() {
+              modal.hide();
+              // Try sending to Google Sheets again
+              const submitBtn = document.querySelector('.submit-btn');
+              submitBtn.disabled = true;
+              submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Retrying...';
+              
+              sendToGoogleSheet(userData)
+                .then(() => {
+                  showCompletionMessage(true, userData.averageRating);
+                })
+                .catch(error => {
+                  showCompletionMessage(false, userData.averageRating, error);
+                });
+            });
+          }
+          
+          // Add event listener for when modal is hidden
+          modalElement.addEventListener('hidden.bs.modal', function() {
+            // Only reset the quiz if we're not trying again
+            if (isSuccess || !tryAgainBtn) {
+              resetQuiz();
+            }
+          });
+          
+          // Show the modal
+          modal.show();
+        } catch (error) {
+          console.error("Error showing modal:", error);
+          // Fallback if modal fails
+          if (isSuccess) {
+            alert("Submission successful! Thank you for completing the questionnaire.");
+          } else {
+            alert("Your responses were saved locally but we couldn't send them to our server. Please try again later.");
+          }
+          resetQuiz();
+        }
+      }
+    </script>
+  </body>
+</html> 
