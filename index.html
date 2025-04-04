@@ -393,15 +393,19 @@
             <input type="text" id="fullName">
           </div>
           <div class="input-group">
-            <label for="email">Email/cell no (optional)</label>
-            <input type="text" id="email">
+            <label for="email">Email (optional)</label>
+            <input type="email" id="email">
           </div>
           <div class="input-group">
-            <label for="age">Age</label>
+            <label for="phone">Phone Number *</label>
+            <input type="tel" id="phone" required>
+          </div>
+          <div class="input-group">
+            <label for="age">Age *</label>
             <input type="text" id="age" required>
           </div>
           <div class="input-group">
-            <label for="gender">Gender</label>
+            <label for="gender">Gender *</label>
             <input type="text" id="gender" required>
           </div>
           <div class="input-group">
@@ -409,15 +413,15 @@
             <input type="text" id="disability">
           </div>
           <div class="input-group">
-            <label for="occupation">Student / Teacher / Occupation</label>
+            <label for="occupation">Student / Teacher / Occupation *</label>
             <input type="text" id="occupation" required>
           </div>
           <button type="submit" class="login-btn">Start Questionnaire</button>
           <div class="auth-error" id="authError">Please fill in all required fields.</div>
         </form>
-        <div class="admin-access-container" style="margin-top: 15px; text-align: center;">
+        <!-- <div class="admin-access-container" style="margin-top: 15px; text-align: center;">
           <button id="adminAccessBtn" class="btn btn-secondary btn-sm">Admin Access</button>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -512,7 +516,7 @@
 
             <div class="quiz-card">
               <div class="question-number">Question 1</div>
-              <div class="question-text" id="questionText">1. The XR headset's audio was enjoyable. (1 = very annoying, 5 = very enjoyable)</div>
+              <div class="question-text" id="questionText">1. The XR headset's audio was enjoyable. (1 = very annoying, 5 = very enjoyable) *</div>
               <div class="options-container" id="optionsContainer">
                 <div class="option-item">
                   <input type="radio" name="question" id="option_a" class="option-input">
@@ -533,6 +537,10 @@
                 <div class="option-item">
                   <input type="radio" name="question" id="option_e" class="option-input">
                   <label for="option_e" class="option-label">5</label>
+                </div>
+                <div class="option-item">
+                  <input type="radio" name="question" id="option_f" class="option-input">
+                  <label for="option_f" class="option-label">Not want to answer</label>
                 </div>
               </div>
 
@@ -623,111 +631,111 @@
       // Quiz data
       const quizQuestions = [
       {
-        question: "The XR headset's audio was enjoyable. (1 = very annoying, 5 = very enjoyable)",
-        tamil: "XR தலைக்கருவியின் ஒலி அனுபவம் மகிழ்ச்சியாக இருந்ததா? (1 = மிகவும் எரிச்சலூட்டும், 5 = மிகவும் மகிழ்ச்சிகரமானது)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The XR headset's audio was enjoyable. (1 = very annoying, 5 = very enjoyable) *",
+        tamil: "XR தலைக்கருவியின் ஒலி அனுபவம் மகிழ்ச்சியாக இருந்ததா? (1 = மிகவும் எரிச்சலூட்டும், 5 = மிகவும் மகிழ்ச்சிகரமானது) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       },
       {
-        question: "The touch interface with oceanic tactile objects was enjoyable (1 = very annoying, 5 = very enjoyable)",
-        tamil: "கடல் சார்ந்த தொடு பொருட்களை தொடும் பொழுது மகிழ்ச்சியாக இருந்ததா? (1 = மிகவும் எரிச்சலூட்டும், 5 = மிகவும் மகிழ்ச்சிகரமானது)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The touch interface with oceanic tactile objects was enjoyable (1 = very annoying, 5 = very enjoyable) *",
+        tamil: "கடல் சார்ந்த தொடு பொருட்களை தொடும் பொழுது மகிழ்ச்சியாக இருந்ததா? (1 = மிகவும் எரிச்சலூட்டும், 5 = மிகவும் மகிழ்ச்சிகரமானது) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       },
       {
-        question: "The overall theme of the ocean through audio and touch was attractive (1 = very unattractive, 5 = very attractive)",
-        tamil: "ஒலி மற்றும் தொடு தொடர்புடன் வழியாக கடலின் மொத்த கருப்பொருள் அறிய மகிழ்ச்சியாக இருந்ததா? (1 = மிகவும் எரிச்சலூட்டும், 5 = மிகவும் மகிழ்ச்சிகரமானது)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The overall theme of the ocean through audio and touch was attractive (1 = very unattractive, 5 = very attractive) *",
+        tamil: "ஒலி மற்றும் தொடு தொடர்புடன் வழியாக கடலின் மொத்த கருப்பொருள் அறிய மகிழ்ச்சியாக இருந்ததா? (1 = மிகவும் எரிச்சலூட்டும், 5 = மிகவும் மகிழ்ச்சிகரமானது) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       },
       {
-        question: "The XR headset's audio instructions were clear (1 = very confusing, 5 = very clear)",
-        tamil: "XR தலைக்கருவியின் ஒலி வழிகாட்டுதல்கள் தெளிவாக இருந்ததா? (1 = மிகவும் குழப்பமானது, 5 = மிகவும் தெளிவானது)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The XR headset's audio instructions were clear (1 = very confusing, 5 = very clear) *",
+        tamil: "XR தலைக்கருவியின் ஒலி வழிகாட்டுதல்கள் தெளிவாக இருந்ததா? (1 = மிகவும் குழப்பமானது, 5 = மிகவும் தெளிவானது) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       },
       {
-        question: "The touch interface with oceanic tactile objects was clear (1 = very confusing, 5 = very clear)",
-        tamil: "கடல் சார்ந்த தொடு பொருட்களை தொடும் பொழுது தெளிவாக இருந்ததா? (1 = மிகவும் குழப்பமானது, 5 = மிகவும் தெளிவானது)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The touch interface with oceanic tactile objects was clear (1 = very confusing, 5 = very clear) *",
+        tamil: "கடல் சார்ந்த தொடு பொருட்களை தொடும் பொழுது தெளிவாக இருந்ததா? (1 = மிகவும் குழப்பமானது, 5 = மிகவும் தெளிவானது) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       },
       {
-        question: "The overall theme of ocean through audio and touch was easy to learn (1 = very difficult, 5 = very easy)",
-        tamil: "ஒலி மற்றும் தொடுதல் வழியாக கடலின் கருப்பொருளை கற்றுக்கொள்வதற்கேற்ப எளிதாக இருந்ததா? (1 = மிகவும் கடினமானது, 5 = மிகவும் எளிதானது)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The overall theme of ocean through audio and touch was easy to learn (1 = very difficult, 5 = very easy) *",
+        tamil: "ஒலி மற்றும் தொடுதல் வழியாக கடலின் கருப்பொருளை கற்றுக்கொள்வதற்கேற்ப எளிதாக இருந்ததா? (1 = மிகவும் கடினமானது, 5 = மிகவும் எளிதானது) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       },
       {
-        question: "The audio descriptions made me feel secure (1 = least secure, 5 = very secure)",
-        tamil: "ஒலி விளக்கங்கள் பாதுகாப்பாக உணர வைத்ததா? (1 = மிகக் குறைந்த பாதுகாப்பு, 5 = மிகவும் பாதுகாப்பானது)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The audio descriptions made me feel secure (1 = least secure, 5 = very secure) *",
+        tamil: "ஒலி விளக்கங்கள் பாதுகாப்பாக உணர வைத்ததா? (1 = மிகக் குறைந்த பாதுகாப்பு, 5 = மிகவும் பாதுகாப்பானது) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       },
       {
-        question: "The touch interface with oceanic tactile objects was secure (1 = least secure, 5 = very secure)",
-        tamil: "கடல் சார்ந்த தொடு பொருட்களை தொடும் பொழுது பாதுகாப்பாக உணர வைத்ததா? (1 = மிகக் குறைந்த பாதுகாப்பு, 5 = மிகவும் பாதுகாப்பானது)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The touch interface with oceanic tactile objects was secure (1 = least secure, 5 = very secure) *",
+        tamil: "கடல் சார்ந்த தொடு பொருட்களை தொடும் பொழுது பாதுகாப்பாக உணர வைத்ததா? (1 = மிகக் குறைந்த பாதுகாப்பு, 5 = மிகவும் பாதுகாப்பானது) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       },
       {
-        question: "The overall theme of ocean through audio and touch was predictable and secure (1 = least secure, 5 = very secure)",
-        tamil: "ஒலி மற்றும் தொடுதல் வழியாக கடலின் கருப்பொருள் கணிக்கத்தக்க மற்றும் பாதுகாப்பாக இருந்ததா? (1 = மிகக் குறைந்த பாதுகாப்பு, 5 = மிகவும் பாதுகாப்பானது)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The overall theme of ocean through audio and touch was predictable and secure (1 = least secure, 5 = very secure) *",
+        tamil: "ஒலி மற்றும் தொடுதல் வழியாக கடலின் கருப்பொருள் கணிக்கத்தக்க மற்றும் பாதுகாப்பாக இருந்ததா? (1 = மிகக் குறைந்த பாதுகாப்பு, 5 = மிகவும் பாதுகாப்பானது) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       },
       {
-        question: "The audio descriptions were efficient and fast (1 = least efficient, 5 = very efficient)",
-        tamil: "ஒலி விளக்கங்கள் பயனுள்ளதாக இருந்ததா? (1 = மிகக் குறைந்த பயனுள்ளதாக இருந்தது, 5 = மிக பயனுள்ளதாக இருந்தது)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The audio descriptions were efficient and fast (1 = least efficient, 5 = very efficient) *",
+        tamil: "ஒலி விளக்கங்கள் பயனுள்ளதாக இருந்ததா? (1 = மிகக் குறைந்த பயனுள்ளதாக இருந்தது, 5 = மிக பயனுள்ளதாக இருந்தது) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       },
       {
-        question: "11. The tactile touch interface was efficient and fast (1 = least efficient, 5 = very efficient)",
-        tamil: "11. கடல் சார்ந்த தொடு பொருட்களை தொடுதல் பயனுள்ளதாக இருந்ததா? (1 = மிகக் குறைந்த பயனுள்ளதாக இருந்தது, 5 = மிக பயனுள்ளதாக இருந்தது)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The tactile touch interface was efficient and fast (1 = least efficient, 5 = very efficient) *",
+        tamil: "கடல் சார்ந்த தொடு பொருட்களை தொடுதல் பயனுள்ளதாக இருந்ததா? (1 = மிகக் குறைந்த பயனுள்ளதாக இருந்தது, 5 = மிக பயனுள்ளதாக இருந்தது) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       },
       {
-        question: "The overall theme of ocean through audio and touch was efficient (1 = least efficient, 5 = very efficient)",
-        tamil: "ஒலி மற்றும் தொடுதல் வழியாக கடலின் கருப்பொருளை அளிவது பயனுள்ளதாக இருந்ததா? (1 = மிகக் குறைந்த பயனுள்ளதாக இருந்தது, 5 = மிக பயனுள்ளதாக இருந்தது)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The overall theme of ocean through audio and touch was efficient (1 = least efficient, 5 = very efficient) *",
+        tamil: "ஒலி மற்றும் தொடுதல் வழியாக கடலின் கருப்பொருளை அளிவது பயனுள்ளதாக இருந்ததா? (1 = மிகக் குறைந்த பயனுள்ளதாக இருந்தது, 5 = மிக பயனுள்ளதாக இருந்தது) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       },
       {
-        question: "The audio experience was very exciting (1 = very boring, 5 = very exciting)",
-        tamil: "ஒலி அனுபவம் மிகவும் ஆர்வமூட்டும் வகையில் இருந்ததா? (1 = மிகக் குறைந்த ஆர்வமுள்ளது, 5 = மிகவும் ஆர்வமூட்டும் வகையில் இருந்தது)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The audio experience was very exciting (1 = very boring, 5 = very exciting) *",
+        tamil: "ஒலி அனுபவம் மிகவும் ஆர்வமூட்டும் வகையில் இருந்ததா? (1 = மிகக் குறைந்த ஆர்வமுள்ளது, 5 = மிகவும் ஆர்வமூட்டும் வகையில் இருந்தது) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       },
       {
-        question: "The touch experience was very exciting (1 = very boring, 5 = very exciting)",
-        tamil: "தொடுதல் அனுபவம் மிகவும் ஆர்வமூட்டும் வகையில் இருந்ததா? (1 = மிகக் குறைந்த ஆர்வமுள்ளது, 5 = மிகவும் ஆர்வமூட்டும் வகையில் இருந்தது)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The touch experience was very exciting (1 = very boring, 5 = very exciting) *",
+        tamil: "தொடுதல் அனுபவம் மிகவும் ஆர்வமூட்டும் வகையில் இருந்ததா? (1 = மிகக் குறைந்த ஆர்வமுள்ளது, 5 = மிகவும் ஆர்வமூட்டும் வகையில் இருந்தது) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       },
       {
-        question: "The overall theme of ocean through audio and touch was interesting (1 = least interesting, 5 = very interesting)",
-        tamil: "ஒலி மற்றும் தொடுதல் வழியாக கடலின் கருப்பொருள் மிகுந்த ஆர்வமூட்டும் வகையில் இருந்ததா? (1 = மிகக் குறைந்த ஆர்வமுள்ளது, 5 = மிகவும் ஆர்வமூட்டும்)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The overall theme of ocean through audio and touch was interesting (1 = least interesting, 5 = very interesting) *",
+        tamil: "ஒலி மற்றும் தொடுதல் வழியாக கடலின் கருப்பொருள் மிகுந்த ஆர்வமூட்டும் வகையில் இருந்ததா? (1 = மிகக் குறைந்த ஆர்வமுள்ளது, 5 = மிகவும் ஆர்வமூட்டும்) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       },
       {
-        question: "The audio experience created was innovative (1 = strongly disagree, 5 = strongly agree)",
-        tamil: "உருவாக்கப்பட்ட ஒலி அனுபவம் புதுமையானது? (1 = மிகவும் மறுப்பு, 5 = மிகவும் ஒப்புதல்)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The audio experience created was innovative (1 = strongly disagree, 5 = strongly agree) *",
+        tamil: "உருவாக்கப்பட்ட ஒலி அனுபவம் புதுமையானது? (1 = மிகவும் மறுப்பு, 5 = மிகவும் ஒப்புதல்) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       },
       {
-        question: "The tactile touch experience created was innovative (1 = strongly disagree, 5 = strongly agree)",
-        tamil: "உருவாக்கப்பட்ட தொடுதல் அனுபவம் புதுமையானது? (1 = மிகவும் மறுப்பு, 5 = மிகவும் ஒப்புதல்)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The tactile touch experience created was innovative (1 = strongly disagree, 5 = strongly agree) *",
+        tamil: "உருவாக்கப்பட்ட தொடுதல் அனுபவம் புதுமையானது? (1 = மிகவும் மறுப்பு, 5 = மிகவும் ஒப்புதல்) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       },
       {
-        question: "The overall theme of ocean created through audio and touch was innovative (1 = strongly disagree, 5 = strongly agree)",
-        tamil: "ஒலி மற்றும் தொடுதல் மூலம் உருவாக்கப்பட்ட கடலின் கருப்பொருள் புதுமையான? (1 = மிகவும் மறுப்பு, 5 = மிகவும் ஒப்புதல்)",
-        options: ["1", "2", "3", "4", "5"],
+        question: "The overall theme of ocean created through audio and touch was innovative (1 = strongly disagree, 5 = strongly agree) *",
+        tamil: "ஒலி மற்றும் தொடுதல் மூலம் உருவாக்கப்பட்ட கடலின் கருப்பொருள் புதுமையான? (1 = மிகவும் மறுப்பு, 5 = மிகவும் ஒப்புதல்) *",
+        options: ["1", "2", "3", "4", "5", "Not want to answer"],
         correct: null
       }
     ];
@@ -738,6 +746,7 @@
       let userData = {
         name: "",
         email: "",
+        phone: "",
         age: "",
         gender: "",
         disability: "",
@@ -889,13 +898,14 @@
         
         const fullName = document.getElementById('fullName').value.trim();
         const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
         const age = document.getElementById('age').value.trim();
         const gender = document.getElementById('gender').value.trim();
         const disability = document.getElementById('disability').value.trim();
         const occupation = document.getElementById('occupation').value.trim();
         
-        // Simple validation for regular users
-        if (!age || !gender || !occupation) {
+        // Simple validation for regular users - require phone, age, gender, occupation
+        if (!phone || !age || !gender || !occupation) {
           showAuthError("Please fill in all required fields");
           return;
         }
@@ -904,6 +914,7 @@
         userData = {
           name: fullName,
           email: email,
+          phone: phone,
           age: age,
           gender: gender,
           disability: disability,
@@ -1149,6 +1160,13 @@
       }
 
       function submitQuiz() {
+        // Check if an option is selected for the last question
+        const selectedOption = document.querySelector('input[name="question"]:checked');
+        if (!selectedOption) {
+          showQuestionRequiredError();
+          return;
+        }
+        
         // Prevent multiple submissions
         const submitBtn = document.querySelector('.submit-btn');
         if (submitBtn.disabled) return;
@@ -1167,22 +1185,26 @@
           // For each original question index
           userData.answers.push({
             question: quizQuestions[i].question,
-            rating: answers[i] !== null ? parseInt(quizQuestions[i].options[answers[i]]) : null
+            rating: answers[i] !== null ? quizQuestions[i].options[answers[i]] : null
           });
         }
         
         userData.endTime = new Date();
         userData.timeSpent = Math.floor((userData.endTime - userData.startTime) / 1000); // in seconds
         
-        // Calculate average rating
-        const validRatings = userData.answers.filter(a => a.rating !== null).map(a => a.rating);
+        // Calculate average rating excluding "Not want to answer" responses
+        const validRatings = userData.answers
+          .filter(a => a.rating !== null && a.rating !== "Not want to answer")
+          .map(a => parseInt(a.rating));
+        
         const averageRating = validRatings.length > 0 ? 
           (validRatings.reduce((sum, rating) => sum + rating, 0) / validRatings.length).toFixed(1) : 
           "N/A";
         
         userData.averageRating = averageRating;
         userData.totalQuestions = quizQuestions.length;
-        userData.answeredQuestions = validRatings.length;
+        userData.answeredQuestions = userData.answers.filter(a => a.rating !== null).length;
+        userData.actualRatedQuestions = validRatings.length;
         
         // Save to local storage
         saveToLocalStorage(userData);
@@ -1211,6 +1233,7 @@
           timestamp: data.endTime ? new Date(data.endTime).toISOString() : new Date().toISOString(),
           name: data.name || 'Anonymous',
           email: data.email || 'Not provided',
+          phone: data.phone || 'Not provided',
           age: data.age || 'Not provided',
           gender: data.gender || 'Not provided',
           disability: data.disability || 'None',
@@ -1222,13 +1245,19 @@
         
         // Add individual question responses
         data.answers.forEach((answer, index) => {
-          formData[`q${index + 1}`] = answer.rating !== null ? answer.rating : 'No answer';
+          if (answer.rating === null) {
+            formData[`q${index + 1}`] = 'No answer';
+          } else if (answer.rating === 'Not want to answer') {
+            formData[`q${index + 1}`] = 'Declined to answer';
+          } else {
+            formData[`q${index + 1}`] = answer.rating;
+          }
         });
         
         // Return a promise for better error handling
         return new Promise((resolve, reject) => {
           // Send data to Google Sheets web app
-          fetch('https://script.google.com/macros/s/AKfycbzrZ310N5GJ1UCZ_-3brfew-2AnagFQ7JQPDxII6mlHtRaXZU6Icoh2yJ6cIafF8SdTWg/exec', {
+          fetch('https://script.google.com/macros/s/AKfycbz3PlRMo1mHDKRcPSYZkSp3eU0n39ZbWA_Tyx6TaoY5vworD-MYsTS2tKfQRrL7A7bOew/exec', {
             method: 'POST',
             mode: 'no-cors', // Required for Google Apps Script
             cache: 'no-cache',
@@ -1260,6 +1289,7 @@
         userData = {
           name: "",
           email: "",
+          phone: "",
           age: "",
           gender: "",
           disability: "",
@@ -1280,6 +1310,7 @@
         // Reset form fields
         document.getElementById('fullName').value = "";
         document.getElementById('email').value = "";
+        document.getElementById('phone').value = "";
         document.getElementById('age').value = "";
         document.getElementById('gender').value = "";
         document.getElementById('disability').value = "";
@@ -1395,6 +1426,13 @@
       // Event listeners
       document.querySelector('.next-btn').addEventListener('click', () => {
         if (currentQuestion < quizQuestions.length - 1) {
+          // Check if an option is selected
+          const selectedOption = document.querySelector('input[name="question"]:checked');
+          if (!selectedOption) {
+            showQuestionRequiredError();
+            return;
+          }
+          // Continue to next question
           navigateToQuestion(currentQuestion + 1);
         }
       });
@@ -1681,6 +1719,33 @@
           }
           resetQuiz();
         }
+      }
+
+      // Function to show error when question not answered
+      function showQuestionRequiredError() {
+        // Create a flash message
+        const flashMessage = document.createElement('div');
+        flashMessage.className = 'alert alert-danger text-center';
+        flashMessage.style.position = 'fixed';
+        flashMessage.style.top = '20px';
+        flashMessage.style.left = '50%';
+        flashMessage.style.transform = 'translateX(-50%)';
+        flashMessage.style.zIndex = '9999';
+        flashMessage.style.width = 'auto';
+        flashMessage.style.padding = '10px 20px';
+        flashMessage.style.borderRadius = '5px';
+        flashMessage.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+        flashMessage.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>Please select an option to continue';
+        
+        // Add to document
+        document.body.appendChild(flashMessage);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+          flashMessage.style.opacity = '0';
+          flashMessage.style.transition = 'opacity 0.5s';
+          setTimeout(() => flashMessage.remove(), 500);
+        }, 3000);
       }
     </script>
   </body>
